@@ -1,3 +1,0 @@
-case,theta,alpha,rho,lambda_c,lambda_r,equilibrium_ratio,n,h,dt,steps,completed,stop_time,energy_ratio_final,max_energy_increase,positive_energy_increments,final_ratio_mean,final_ratio_min,final_ratio_max,final_ratio_max_error,mass_final
-R5_theta_half,0.5,0.2,0.3,1,1.5,0.4,256,0.00390625,1.52587890625e-06,3276800,0,0.0102813720703125,inf,inf,6195,nan,nan,nan,nan,5.137390507179095e+137
-R5_theta_one,1,0.2,0.3,1,1.5,0.4,256,0.00390625,1.52587890625e-06,3276800,1,5,0.4000000001400092,2.220446049250313e-16,0,0.3999985092921806,0.3999985039759087,0.3999985146084739,1.496024091274251e-06,0.5000000000851912

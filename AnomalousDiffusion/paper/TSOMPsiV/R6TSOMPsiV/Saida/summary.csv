@@ -1,5 +1,0 @@
-case,lambda_c,lambda_r,variance_final,variance_ratio_to_fick,min_psi,energy_ratio
-Fickian,0,0,0.0041,1,9.29718e-14,nan
-R6_T1,0.5,0.166667,0.0041,1,9.35271e-14,0.569353
-R6_T2,2,0.666667,0.0041,1,9.35271e-14,0.56286
-R6_T3,10,3.33333,0.0041,1,9.35271e-14,0.530536
