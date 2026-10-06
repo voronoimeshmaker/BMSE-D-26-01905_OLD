@@ -3,27 +3,29 @@
 // -----------------------------------------------------------------------------
 // BGCLib.hpp
 //
-// Convenience public header for bgclib.
+// Convenient public header for bgclib.
 //
-// Use this header in small programs, smoke tests, examples, and research drivers
-// when a single include is more convenient than fine-grained module includes.
+// This header is intended for use in small programs, smoke tests, examples,
+// and research drivers where a single include is more convenient than using
+// fine-grained module headers.
 //
-// For larger programs, prefer including only the module headers actually needed.
-// This reduces rebuild time and makes dependencies more explicit.
+// For larger applications, it is recommended to include only the specific
+// module headers that are required. This helps reduce rebuild times and makes
+// dependencies more explicit.
 //
 // External dependencies:
 //   PETSc  - required by the numerical core.
 //   MPI    - required through PETSc/MPI-enabled execution.
-//   YAML   - not part of the numerical core. YAML readers belong to programs/
-//            or to optional IO adapters.
+//   YAML   - not part of the numerical core. YAML readers belong in programs/
+//            or in optional IO adapters.
 //
 // Design conventions:
-//   - DOD-oriented data structures.
+//   - Data-oriented (DOD) data structures.
 //   - No inheritance-based model hierarchy.
 //   - No pure virtual model interface.
-//   - Runtime model dispatch uses registries and operation tables.
-//   - Model code builds generic discrete operators and RHS descriptions.
-//   - Generic assembly code owns PETSc Mat/Vec insertion details.
+//   - Runtime model dispatch is handled via registries and operation tables.
+//   - Model code constructs generic discrete operators and RHS descriptions.
+//   - Generic assembly code is responsible for PETSc Mat/Vec insertion details.
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -69,12 +71,6 @@
 #include <bgclib/Models/TBGC/Coeff.hpp>
 #include <bgclib/Models/TBGC/Model.hpp>
 #include <bgclib/Models/TBGC/Operator.hpp>
-#include <bgclib/Models/TSOM/Coeff.hpp>
-#include <bgclib/Models/TSOM/Model.hpp>
-#include <bgclib/Models/TSOM/Operator.hpp>
-#include <bgclib/Models/TSOMPsiV/Coeff.hpp>
-#include <bgclib/Models/TSOMPsiV/Model.hpp>
-#include <bgclib/Models/TSOMPsiV/Operator.hpp>
 #include <bgclib/Models/ModelConcepts.hpp>
 
 // -----------------------------------------------------------------------------
