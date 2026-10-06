@@ -1,0 +1,19 @@
+tf = 5.0
+dt = 1.0e-4
+nx = 512
+output_dir = SaidaPsiV
+verbose = false
+debug = false
+
+# TSOMPsiV MMS4 free-energy/dissipation test.
+alpha = 0.75
+rho = 0.25
+lambda_c = 1.0
+lambda_r = 0.3333333333
+
+# MMS-4 compares the three theta values in one execution.
+theta_list = 0.0, 0.5, 1.0
+
+# Psi uses homogeneous Neumann boundaries and V uses BC2.
+v_boundary = constant_gradient
+sc = 0.0

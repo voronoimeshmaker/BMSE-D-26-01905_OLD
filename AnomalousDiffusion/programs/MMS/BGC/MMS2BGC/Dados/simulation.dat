@@ -1,0 +1,5 @@
+tf       = 1.0e-3
+cdt      = 1.024e-1
+nx_list  = 8
+bv_list  = 1.0e-2
+print_system = false

@@ -1,0 +1,14 @@
+MMS1BGC full numerical run status
+======================================
+
+Objective: compare analytical solution, numerical solution, and truncation error.
+
+Analytical fields, PETSc numerical fields, analytical-vs-numerical
+errors, truncation-error fields, and norm summaries are written per Bv/N.
+The numerical solve follows the BGC implicit transient path:
+(A + h/dt I) * phi_np1 = h*source(t_np1) + boundary_rhs(t_np1) + (h/dt)*phi_n.
+
+Output files:
+- mms1bgc_convergence.csv
+- mms1bgc_fields_NN*.dat
+- mms1bgc_lte_NN*.dat

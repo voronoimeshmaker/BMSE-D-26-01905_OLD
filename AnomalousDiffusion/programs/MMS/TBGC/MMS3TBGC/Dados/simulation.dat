@@ -1,0 +1,7 @@
+tf = 1.0e-3
+cdt = 1.024e-1
+nx_list = 8, 16, 32, 64, 128, 256, 512
+bv_list = 1.0e-2, 5.0e-1
+output_dir = Saida
+verbose = true
+debug = false

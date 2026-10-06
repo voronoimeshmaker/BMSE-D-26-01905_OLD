@@ -1,0 +1,15 @@
+case,time,mass_normalized
+TSOM_original,0,1
+TSOM_original,0.005,1
+TSOM_V0,0,1
+TSOM_V0,0.005,1
+TSOM_Lc100,0,1
+TSOM_Lc100,0.005,1
+TSOM_Lc500,0,1
+TSOM_Lc500,0.005,1
+BGC_5e-4,0,1
+BGC_5e-4,0.005,0.999958
+BGC_1e-3,0,1
+BGC_1e-3,0.005,0.99978
+Fickian,0,1
+Fickian,0.005,1

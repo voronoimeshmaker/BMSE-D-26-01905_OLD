@@ -1,0 +1,44 @@
+# ── TSOM Pulse Benchmark — case P1b ──────────────────────────────────────
+# Group P1: varying alpha | rho=0.25 | Lc=2
+
+model:
+  theta:     1
+  alpha:     0.5
+  rho:       0.25
+  lambda_c:  2.00000000
+  lambda_r:  1.00000000
+
+mesh:
+  N:     512
+  x_min: 0.0
+  x_max: 1.0
+
+time:
+  C:      0.1024         # dt = C * h^2
+  tau_f:  0.005
+  steps:  12800
+
+initial_condition:
+  type:    gaussian
+  sigma0:  0.04
+  mu0:     0.5
+  V0:      0.0        # fully mobile at t=0
+
+boundary_conditions:
+  type:    no_flux    # alpha_f = 0, gamma_f = 0
+
+output:
+  case_name:    P1b
+  save_profile_tau0:   true
+  save_profile_tauf:   true
+  save_fickian_ref:    true   # D_eff = 1 - alpha = 0.5000
+  D_eff:        0.50000000
+  sigma0:       0.04
+  mu0:          0.5
+  diagnostics:
+    - min_Psi
+    - min_U
+    - min_V
+    - mass_final
+    - L2_error_Fickian
+    - center_ratio_Vf_over_Psif

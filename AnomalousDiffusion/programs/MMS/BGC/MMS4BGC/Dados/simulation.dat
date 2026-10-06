@@ -1,0 +1,7 @@
+tf = 5.0e-3
+cdt = 1.024e-1
+nx_list = 512
+bv_list = 1.0e-4, 5.0e-4, 1.0e-3
+output_dir = Novos_Fig07
+verbose = true
+debug = false
