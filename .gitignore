@@ -1,3 +1,21 @@
-AnomalousDiffusion/programs/MMS/MMSPsiV/Saida/R3b_R4b_history.csv
-AnomalousDiffusion/programs/MMS/MMSPsiV/Saida/R3a_R4a_history.csv
-AnomalousDiffusion/programs/MMS/MMSPsiV/Saida/R5_theta_one_history.csv
+# build
+build/
+cmake-build-*/
+*.o
+*.a
+*.so
+# PETSc / run outputs
+*.log
+*.vtk
+*.bin
+*.info
+output/
+results/
+# Python
+__pycache__/
+*.pyc
+.venv/
+# editors / OS
+.vscode/
+.idea/
+.DS_Store

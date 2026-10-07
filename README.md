@@ -7,8 +7,8 @@ Bevilacqua–Galeão–Costa (BGC) diffusion equation**
 
 [![Paper](https://img.shields.io/badge/paper-under%20review%20·%20JBSMSE-5C6672?style=flat-square)](#citation)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.XXXXXXX-2F6E72?style=flat-square)](https://doi.org/10.5281/zenodo.XXXXXXX)
-[![C++](https://img.shields.io/badge/C%2B%2B-17-2F6E72?style=flat-square&logo=cplusplus&logoColor=white)](#building-the-c-solvers)
-[![PETSc](https://img.shields.io/badge/PETSc-3.20-2F6E72?style=flat-square)](https://petsc.org)
+[![C++](https://img.shields.io/badge/C%2B%2B-23-2F6E72?style=flat-square&logo=cplusplus&logoColor=white)](#building-the-c-solvers)
+[![PETSc](https://img.shields.io/badge/PETSc-%E2%89%A53.19-2F6E72?style=flat-square)](https://petsc.org)
 [![Python](https://img.shields.io/badge/python-3.10%2B-B07D5B?style=flat-square&logo=python&logoColor=white)](#python-reference-implementation)
 [![License](https://img.shields.io/badge/license-MIT-8A939D?style=flat-square)](LICENSE)
 
@@ -56,31 +56,34 @@ from the fourth-order model and not from the discretisation.
 
 ```text
 .
-├── src/                    C++/PETSc solvers (BGC and TBGC)
-├── cases/                  input files for every run reported in the paper
-├── python/                 NumPy/SciPy re-implementation of both schemes
-│   ├── fvsolver.py         assembly of the BGC and TBGC operators
-│   ├── gauss.py            Gaussian-pulse benchmark (Tables 10–11)
-│   ├── wholeline.py        whole-line Fourier reference (Section 9.4)
-│   ├── energy.py           free-energy refinement, B_v = 10 (Table 9)
-│   ├── eig.py              smallest eigenvalues of both operators
-│   ├── noflux.py           discrete energy law, closed system (Section 6.3)
-│   ├── layer.py            singular limit B_v → 0 (Section 2.2)
-│   └── dphi.py             local dissipation diagnostic (Section 3)
-├── verification/
-│   └── verify_closures_sympy.py   symbolic check of Appendices A–B
+├── AnomalousDiffusion/
+│   ├── CMakeLists.txt          main build (library + programs)
+│   ├── bgclib/                 C++/PETSc library: BGC (direct) and TBGC (mixed) models
+│   ├── programs/
+│   │   ├── MMS/BGC/            MMS1BGC, MMS2BGC, MMS4BGC
+│   │   ├── MMS/TBGC/           MMS1TBGC, MMS2TBGC, MMS4TBGC
+│   │   └── examples/           minimal BGC example
+│   └── ModelosOld/             legacy library and the cases of Sections 3 and 8
+│       ├── programs/cases/     case2 (Section 3), case3 (Section 8)
+│       └── standalone/         CMake entry point for the legacy build
+├── python/                     NumPy/SciPy re-implementation of both schemes
+├── verification/               symbolic check of Appendices A–B (SymPy)
 ├── requirements.txt
 ├── CITATION.cff
 └── LICENSE
 ```
+
+Each program reads its parameters from `Dados/simulation.dat` and writes
+results to `Saida/` (or the `output_dir` set in that file) inside its own
+directory.
 
 ## Quick start
 
 The Python tools run on any machine with Python 3.10 or later:
 
 ```bash
-git clone https://github.com/<user>/<repo>.git
-cd <repo>
+git clone https://github.com/voronoimeshmaker/BMSE-D-26-01905.git
+cd BMSE-D-26-01905
 python -m pip install -r requirements.txt
 
 python verification/verify_closures_sympy.py   # 26/26 checks passed
@@ -89,39 +92,57 @@ cd python && python gauss.py                   # Gaussian-pulse benchmark
 
 ## Building the C++ solvers
 
-**Requirements:** a C++17 compiler, CMake ≥ 3.16, and PETSc ≥ 3.20 configured
-with MUMPS.
+**Requirements:** a C++23 compiler (GCC ≥ 13 or Clang ≥ 17), CMake ≥ 3.25,
+MPI, PETSc ≥ 3.19 with MUMPS (found through `pkg-config`), and yaml-cpp.
+
+On Ubuntu 24.04:
 
 ```bash
-# PETSc with MUMPS (skip if already installed)
-./configure --download-mumps --download-scalapack --download-metis --download-parmetis
-export PETSC_DIR=/path/to/petsc PETSC_ARCH=arch-linux-c-opt
-
-# build
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j
+sudo apt install build-essential cmake pkg-config petsc-dev libyaml-cpp-dev
 ```
 
-<!-- Adjust the executable names and options below to match src/. -->
+For a custom PETSc installation, set `PETSC_DIR` (and `PETSC_ARCH`) before
+configuring.
 
 ```bash
-./build/<bgc_solver>  -case cases/<case>.ini
-./build/<tbgc_solver> -case cases/<case>.ini
+cd AnomalousDiffusion
+
+# main build: bgclib and the MMS programs
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+
+# legacy build: cases of Sections 3 and 8
+cmake -S ModelosOld/standalone -B build-legacy -DCMAKE_BUILD_TYPE=Release
+cmake --build build-legacy -j
+```
+
+Each program must run from its own directory. The `run_<program>` targets do
+this automatically:
+
+```bash
+cmake --build build --target run_MMS1BGC
+# or, by hand
+cd programs/MMS/BGC/MMS1BGC && ../../../../build/bin/MMS1BGC
 ```
 
 ## Reproducing the paper
 
-| Paper | Content | C++ case | Python |
+| Paper | Content | Program | Python |
 |---|---|---|---|
-| Section 7, Tables 1–4 | Manufactured solution, homogeneous BCs | `cases/mms1_*` | — |
-| Section 7, Tables 5–8 | Manufactured solution, non-homogeneous BCs | `cases/mms2_*` | — |
-| Section 8, Table 9 | Free-energy refinement, $B_v=10$ | `cases/energy_*` | `energy.py`, `eig.py` |
-| Section 9, Tables 10–11 | Gaussian pulse, $B_v\in\{10^{-4},5\times10^{-4},10^{-3}\}$ | `cases/gauss_*` | `gauss.py`, `wholeline.py` |
+| Section 3 | Sign-changing example, $N=512$ | `ModelosOld/programs/cases/case2/Case2_BGC`, `Case2_TBGC` | `dphi.py` |
+| Section 7, Tables 1–4 | Manufactured solution, homogeneous BCs | `MMS1BGC`, `MMS1TBGC` | — |
+| Section 7, Tables 5–8 | Manufactured solution, non-homogeneous BCs | `MMS2BGC`, `MMS2TBGC` | — |
+| Section 8, Table 9 | Free-energy comparison, $B_v=10$, $\phi_0=\sin^2(\pi\xi)$ | `ModelosOld/programs/cases/case3/Case3_BGC`, `Case3_TBGC` | `energy.py`, `eig.py` |
+| Section 9, Tables 10–11 | Gaussian pulse, $B_v\in\{10^{-4},5\times10^{-4},10^{-3}\}$ | `MMS4BGC`, `MMS4TBGC` | `gauss.py`, `wholeline.py` |
 | Section 6.3 | Discrete energy inequality, closed system | — | `noflux.py` |
 | Appendices A–B | Boundary-closure coefficients | — | `verification/verify_closures_sympy.py` |
 
-All runs use backward Euler with $\Delta\tau = 0.1024\,h^2$ on uniform meshes
-of $N$ control volumes.
+All runs use backward Euler with $\Delta\tau=\tau_f/n$,
+$n=\lceil\tau_f/(0.1024\,h^2)\rceil$, on uniform meshes of $N$ control volumes.
+The MMS programs write the $L_1$ error to `*_convergence.csv`; the cell-centre
+errors used for the $L_2$ and $L_\infty$ norms are in `*_fields_N*.dat`.
+The Section 8 cases run one mesh at a time: set `nx` in `Dados/simulation.dat`
+to $16, 32, \dots, 256$.
 
 > [!NOTE]
 > The Python scripts rebuild both schemes from the coefficient tables printed
@@ -170,7 +191,8 @@ If you use this code, please cite the paper and the archived software:
   title     = {{BGC mixed finite volumes}},
   year      = {2026},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.XXXXXXX}
+  doi       = {10.5281/zenodo.XXXXXXX},
+  url       = {https://github.com/voronoimeshmaker/BMSE-D-26-01905}
 }
 ```
 

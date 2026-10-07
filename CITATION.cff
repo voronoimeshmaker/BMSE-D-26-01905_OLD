@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper and the archived code."
+title: "BGC mixed finite volumes"
+abstract: >-
+  Direct and mixed gradient-flow finite-volume solvers (C++/PETSc) for the
+  fourth-order Bevilacqua-Galeão-Costa (BGC) diffusion equation, with a
+  NumPy/SciPy reference implementation and a symbolic check of the
+  boundary-closure coefficients.
+type: software
+version: "1.0.0"
+date-released: "2026-10-07"
+authors:
+  - family-names: Vasconcellos
+    given-names: "João Flávio"
+    email: jflavio@iprj.uerj.br
+    affiliation: "Instituto Politécnico do Rio de Janeiro, Universidade do Estado do Rio de Janeiro (IPRJ/UERJ)"
+license: MIT
+repository-code: "https://github.com/voronoimeshmaker/BMSE-D-26-01905"
+keywords:
+  - finite volume
+  - fourth-order diffusion
+  - non-Fickian diffusion
+  - gradient flow
+  - Cahn-Hilliard
+  - PETSc
+preferred-citation:
+  type: article
+  title: >-
+    A mixed gradient-flow finite-volume formulation for a fourth-order
+    non-Fickian diffusion equation: free-energy analysis and numerical
+    verification
+  authors:
+    - family-names: Vasconcellos
+      given-names: "João Flávio"
+  journal: "Journal of the Brazilian Society of Mechanical Sciences and Engineering"
+  year: 2026
+  notes: "Under review, manuscript BMSE-D-26-01905"

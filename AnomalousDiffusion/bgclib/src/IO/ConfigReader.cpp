@@ -1,5 +1,7 @@
 #include <bgclib/IO/ConfigReader.hpp>
 
+#include <algorithm>
+#include <cctype>
 #include <fstream>
 
 namespace bgc {
